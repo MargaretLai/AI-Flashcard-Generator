@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.sign-in-box {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-top: 5rem;
+}
