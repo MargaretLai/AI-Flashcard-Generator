@@ -8,3 +8,12 @@
     justify-content: center;
     margin-top: 5rem;
 }
+
+.user-input {
+    display: block;
+    margin: 2.5rem auto;
+}
+
+.user-input-button {
+    margin-top: 1rem;
+}

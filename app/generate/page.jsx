@@ -1,10 +1,13 @@
-import React from 'react'
-import { getAuth } from '@clerk/nextjs/server'
+import React from "react";
+import { getAuth } from "@clerk/nextjs/server";
+import UserInput from "../components/UserInput";
+import FlashcardList from "../components/FlashcardList";
 
 export default function page() {
   return (
-    <div>
-      This is the functional page
-    </div>
-  )
+    <>
+      <UserInput />
+      <FlashcardList />
+    </>
+  );
 }
