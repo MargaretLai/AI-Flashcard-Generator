@@ -2,14 +2,19 @@
 import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 
-export default function FlashcardList() {
+export default function FlashcardList({ query }) {
   const [flippedCards, setFlippedCards] = useState({});
   const [flashcards, setFlashcards] = useState([]);
 
   useEffect(() => {
     const fetchFlashcards = async () => {
+      if (!query) {
+        return;
+      }
       try {
-        const response = await fetch("/api/flashcardContent");
+        const response = await fetch(
+          `/api/flashcardContent?query=${encodeURIComponent(query)}`
+        );
         const data = await response.json();
         const parsedContent = JSON.parse(data.content);
         setFlashcards(parsedContent);
@@ -19,7 +24,7 @@ export default function FlashcardList() {
     };
 
     fetchFlashcards();
-  }, []);
+  }, [query]);
 
   const handleFlip = (id) => {
     setFlippedCards((prevState) => ({
