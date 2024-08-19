@@ -1,9 +1,25 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 
 export default function FlashcardList() {
   const [flippedCards, setFlippedCards] = useState({});
+  const [flashcards, setFlashcards] = useState([]);
+
+  useEffect(() => {
+    const fetchFlashcards = async () => {
+      try {
+        const response = await fetch("/api/flashcardContent");
+        const data = await response.json();
+        const parsedContent = JSON.parse(data.content);
+        setFlashcards(parsedContent);
+      } catch (error) {
+        console.error("Failed to fetch flashcards:", error);
+      }
+    };
+
+    fetchFlashcards();
+  }, []);
 
   const handleFlip = (id) => {
     setFlippedCards((prevState) => ({
@@ -12,21 +28,14 @@ export default function FlashcardList() {
     }));
   };
 
-  const flashcards = [
-    { id: 1, title: "Card 1", definition: "Definition 1" },
-    { id: 2, title: "Card 2", definition: "Definition 2" },
-    { id: 3, title: "Card 3", definition: "Definition 3" },
-    { id: 4, title: "Card 4", definition: "Definition 4" },
-  ];
-
   return (
     <div className="flex justify-center items-center flex-wrap gap-8">
       {flashcards.map((flashcard) => (
         <Flashcard
           key={flashcard.id}
           id={flashcard.id}
-          title={flashcard.title}
-          definition={flashcard.definition}
+          title={flashcard.flashcard_front}
+          definition={flashcard.flashcard_back}
           isFlipped={flippedCards[flashcard.id]}
           onFlip={handleFlip}
         />
