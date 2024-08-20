@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function SavedLists() {
   const { userId } = useAuth();
   const [savedLists, setSavedLists] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchSavedLists = async () => {
@@ -36,7 +38,12 @@ export default function SavedLists() {
                   ))}
                 </div>
                 <div className="card-actions justify-end mt-4">
-                  <button className="btn btn-primary">View Details</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => router.push(`/saved-lists/${list.id}`)}
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             </div>
