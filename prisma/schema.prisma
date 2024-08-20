@@ -14,7 +14,27 @@ model Pet {
 }
 
 model Post {
-  id Int @id @default(autoincrement())
-  title String
+  id      Int    @id @default(autoincrement())
+  title   String
   content String
+}
+
+model savedFlashcardList {
+  id           Int         @id @default(autoincrement())
+  userID       String // Clerk.js user ID
+  listName     String
+  flashcards   Flashcard[] 
+  flashcardIds Int[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Flashcard {
+  id                   Int                 @id @default(autoincrement())
+  flashcard_front      String
+  flashcard_back       String
+  list                 savedFlashcardList? @relation(fields: [savedFlashcardListId], references: [id])
+  savedFlashcardListId Int?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
 }
