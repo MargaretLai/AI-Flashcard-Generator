@@ -23,7 +23,12 @@ export default function Navbar() {
         </div>
       </SignedOut>
       <SignedIn>
-        <UserButton />
+        <div className="flex-none flex items-center">
+          <Link href="/saved-lists" className="btn btn-ghost">
+            Saved Flashcard Lists
+          </Link>
+          <UserButton className="ml-2" />
+        </div>
       </SignedIn>
     </nav>
   );
