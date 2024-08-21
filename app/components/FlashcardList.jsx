@@ -5,6 +5,7 @@ import Flashcard from "./Flashcard";
 export default function FlashcardList({ query }) {
   const [flippedCards, setFlippedCards] = useState({});
   const [flashcards, setFlashcards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [isPromptVisible, setIsPromptVisible] = useState(false);
   const [listName, setListName] = useState("");
 
@@ -42,6 +43,7 @@ export default function FlashcardList({ query }) {
       if (!query) {
         return;
       }
+      setIsLoading(true); // Start loading
       try {
         const response = await fetch(
           `/api/flashcardContent?query=${encodeURIComponent(query)}`
@@ -51,6 +53,8 @@ export default function FlashcardList({ query }) {
         setFlashcards(parsedContent);
       } catch (error) {
         console.error("Failed to fetch flashcards:", error);
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     };
 
@@ -66,25 +70,34 @@ export default function FlashcardList({ query }) {
 
   return (
     <>
-      <div className="flex justify-center items-center flex-wrap gap-8">
-        {flashcards.map((flashcard) => (
-          <Flashcard
-            key={flashcard.id}
-            id={flashcard.id}
-            title={flashcard.flashcard_front}
-            definition={flashcard.flashcard_back}
-            isFlipped={flippedCards[flashcard.id]}
-            onFlip={handleFlip}
-          />
-        ))}
-      </div>
-      {flashcards.length !== 0 && (
-        <button
-          onClick={handleSaveFlashcards}
-          className="btn btn-active btn-neutral save-flashcards-btn"
-        >
-          Save Flashcards
-        </button>
+      {isLoading ? (
+        <div className="mt-4 text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+          <p>Loading flashcards, please wait...</p>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-center items-center flex-wrap gap-8">
+            {flashcards.map((flashcard) => (
+              <Flashcard
+                key={flashcard.id}
+                id={flashcard.id}
+                title={flashcard.flashcard_front}
+                definition={flashcard.flashcard_back}
+                isFlipped={flippedCards[flashcard.id]}
+                onFlip={handleFlip}
+              />
+            ))}
+          </div>
+          {flashcards.length !== 0 && (
+            <button
+              onClick={handleSaveFlashcards}
+              className="btn btn-active btn-neutral save-flashcards-btn"
+            >
+              Save Flashcards
+            </button>
+          )}
+        </>
       )}
 
       {isPromptVisible && (
