@@ -13,7 +13,7 @@ export async function GET(req) {
     const systemRole = `
       You are a teacher that knows all subjects very well. 
       Your job is to generate 8 flashcards given a subject/topic.
-      Return the flashcards in this format (array of objects), don't include any text that's not json: 
+      Return the flashcards in this format (array of objects), don't include any text that's not json, important! Don't include anything that's not json in your response: 
       [ 
       {
         "id": x,
