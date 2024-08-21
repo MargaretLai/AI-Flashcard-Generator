@@ -14,7 +14,7 @@ export async function GET(req) {
     const savedLists = await prisma.savedFlashcardList.findMany({
       where: { userID: userId },
       include: {
-        flashcards: true, // Include associated flashcards
+        flashcards: true, 
       },
     });
 
