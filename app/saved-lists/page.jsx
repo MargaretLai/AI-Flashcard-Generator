@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function SavedLists() {
   const { userId } = useAuth();
   const [savedLists, setSavedLists] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,18 +17,24 @@ export default function SavedLists() {
         setSavedLists(data);
       } catch (error) {
         console.error("Failed to fetch saved flashcard lists:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (userId) {
       fetchSavedLists();
+    } else {
+      setLoading(false); // Stop loading if user is not authenticated
     }
   }, [userId]);
 
   return (
     <>
       <div className="flex justify-center items-center flex-wrap gap-8 p-8">
-        {savedLists.length > 0 ? (
+        {loading ? (
+          <div className="text-center">Loading...</div>
+        ) : savedLists.length > 0 ? (
           savedLists.map((list) => (
             <div key={list.id} className="card bg-base-100 w-96 shadow-xl">
               <div className="card-body">
